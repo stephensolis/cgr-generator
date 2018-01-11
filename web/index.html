@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+
+		<title>CGR Generator</title>
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+		<style>
+			canvas {
+				image-rendering: optimizeSpeed;
+				image-rendering: -moz-crisp-edges;
+				image-rendering: -webkit-optimize-contrast;
+				image-rendering: -o-crisp-edges;
+				image-rendering: pixelated;
+				-ms-interpolation-mode: nearest-neighbor;
+			}
+		</style>
+
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+		<script src="main.js"></script>
+	</head>
+
+	<body>
+		<a href="https://github.com/stephensolis/cgr-generator">
+			<img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png">
+		</a>
+
+		<div class="container mt-4">
+			<h1>CGR Generator</h1>
+
+			<div class="text-center my-2">
+				<canvas id="cgr_plot" class="border border-dark" style="height: 512px; width: 512px;"></canvas>
+			</div>
+
+			<div id="progress_text" class="mb-2" style="display: none;"></div>
+
+			<div class="mb-3">
+				<button id="do_plot" class="btn btn-success">Plot!</button>
+				<a id="save_image" download="cgr.png" role="button" class="btn btn-info text-white">Save as PNG image</a>
+			</div>
+
+			<div class="card mb-3">
+				<div class="card-header">
+					<strong>Input</strong>
+				</div>
+				<div class="card-body">
+					<div class="input-group mb-1">
+						<label class="mr-2 mt-2" for="input_data_type_toggles">Data type:</label>
+						<div id="input_data_type_toggles" class="btn-group mr-1" data-toggle="buttons">
+							<label class="btn btn-outline-primary active">
+								<input id="text_alphabet_toggle" type="radio" name="input_data_type" value="text" checked> 4-letter text alphabet (eg. DNA)
+							</label>
+							<label class="btn btn-outline-primary">
+								<input id="binary_data_toggle" type="radio" name="input_data_type" value="binary"> Binary data
+							</label>
+						</div>
+					</div>
+
+					<div class="input-group mb-1">
+						<label class="mr-2 mt-2" for="text_input_source_toggles">Input source:</label>
+						<div id="text_input_source_toggles" class="btn-group mr-1" data-toggle="buttons">
+							<label class="btn btn-outline-primary active">
+								<input id="textfield_toggle" type="radio" name="text_input_source" value="textfield" checked> Text field
+							</label>
+							<label class="btn btn-outline-primary">
+								<input id="text_file_toggle" type="radio" name="text_input_source" value="local_file"> Local FASTA file
+							</label>
+							<label class="btn btn-outline-primary">
+								<input id="text_url_toggle" type="radio" name="text_input_source" value="url"> FASTA file from URL
+							</label>
+							<label class="btn btn-outline-primary">
+								<input id="ncbi_toggle" type="radio" name="text_input_source" value="ncbi"> NCBI ID
+							</label>
+						</div>
+					</div>
+
+					<div class="input-group mb-1" style="display: none;">
+						<label class="mr-2 mt-2" for="binary_input_source_toggles">Input source:</label>
+						<div id="binary_input_source_toggles" class="btn-group mr-1" data-toggle="buttons">
+							<label class="btn btn-outline-primary active">
+								<input id="binary_file_toggle" type="radio" name="binary_input_source" value="local_file" checked> Local binary file
+							</label>
+							<label class="btn btn-outline-primary">
+								<input id="binary_url_toggle" type="radio" name="binary_input_source" value="url"> Binary file from URL
+							</label>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label id="input_source_description" for="input_value">Sequence:</label>
+						<div id="input_value">
+							<textarea id="textfield_input" rows="10" class="w-100"></textarea>
+							<input id="local_file_input" type="file" style="display: none;">
+							<input id="text_line_input" type="text" class="form-control" style="display: none;">
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="card mb-3">
+				<div class="card-header">
+					<strong>Options</strong>
+				</div>
+				<div class="card-body">
+					<div class="form-row">
+						<div class="form-group col-md-4">
+							<label for="k_value">k:</label>
+							<select id="k_value" class="form-control custom-select"></select>
+						</div>
+						<div class="form-group col-md-8">
+							<label for="order_value">Label order, clockwise from bottom-left:</label>
+							<input id="order_value" type="text" class="form-control" value="A,C,G,T">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

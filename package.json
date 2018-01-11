@@ -1,0 +1,35 @@
+{
+	"name": "cgr-generator",
+	"version": "1.0.0",
+	"description": "A Chaos Game Representation generator for DNA sequences",
+	"homepage": "https://go.sb0.io/cgr-generator",
+	"author": {
+		"name": "Stephen",
+		"email": "stephsolis@gmail.com",
+		"url": "https://stephensol.is/"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/stephensolis/cgr-generator"
+	},
+	"license": "MIT",
+	"main": "lib/cgr.js",
+	"devDependencies": {
+		"babel-plugin-transform-remove-strict-mode": "0.x.x",
+		"babel-preset-env": "1.x.x",
+		"babel-core": "6.x.x",
+		"chai": "4.x.x",
+		"grunt": "1.x.x",
+		"grunt-babel": "7.x.x",
+		"grunt-browserify": "5.x.x",
+		"grunt-contrib-clean": "1.x.x",
+		"grunt-contrib-htmlmin": "2.x.x",
+		"grunt-contrib-jshint": "1.x.x",
+		"grunt-contrib-uglify": "3.x.x",
+		"grunt-htmlhint": "0.x.x",
+		"grunt-jscs": "3.x.x",
+		"grunt-mocha-test": "0.x.x",
+		"load-grunt-tasks": "3.x.x",
+		"mocha": "4.x.x"
+	}
+}
