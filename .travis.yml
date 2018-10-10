@@ -7,9 +7,20 @@ before_install:
   - npm install -g grunt-cli
 install:
   - npm install
+  - yarn install
+
 before_script:
   - node --version
   - npm --version
+  - yarn --version
   - grunt --version
 script:
   - grunt
+
+jobs:
+  include:
+    - stage: distribute
+      if: branch = master AND type != pull_request
+      script:
+        - 'echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc'
+        - npm publish
