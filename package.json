@@ -1,6 +1,6 @@
 {
 	"name": "cgr-generator",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "A Chaos Game Representation generator for DNA sequences",
 	"homepage": "https://go.sb0.io/cgr-generator",
 	"author": {
